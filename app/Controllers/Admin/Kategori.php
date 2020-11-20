@@ -13,44 +13,63 @@ class Kategori extends BaseController
         echo "Belajar CI-4/kategori";
     }
 
-    public function select()
+    public function read()
     {
+        $pager = \Config\Services::pager();
         $model = new Kategori_M;
-        $kategori = $model->findALL();
-
-        print_r($kategori);
+        // $kategori = $model->findALL();
 
         $data = [
-            'judul' => 'SELECT DATA Dari Controller',
-            'kategori' => $kategori
+            'judul' => 'DATA KATEGORI',
+            // 'kategori' => $kategori
+            'kategori' => $model->paginate(2, 'group1'),
+            'pager' => $model->pager
         ];
-        echo view("kategori/select", $data);
+        return view("kategori/select", $data);
     }
 
-    public function selectwhere($id = "null")
-    {
-        echo "menampilkan data yg dipilih {$id}";
-    }
-
-    public function forminsert()
+    public function create()
     {
         // echo view("template/header");
-        echo view("kategori/forminsert");
+        echo view("kategori/insert");
         // echo view("template/footer");
     }
-    public function formupdate($id = null)
+
+    public function insert()
     {
-        echo "menampilkan from update $id";
+        print_r($_POST);
+
+        $model = new kategori_M();
+        if ($model->insert($_POST) == false) {
+            $error = $model->errors();
+            // echo $error['kategori']
+            session()->setFlashdata('info', $error['kategori']);
+            return redirect()->to(base_url("/admin/kategori/create"));
+        } else {
+            return redirect()->to(base_url("/admin/kategori"));
+        }
+    }
+    public function find($id = null)
+    {
+        $model = new Kategori_M;
+        $kategori = $model->find($id);
+        $data = [
+            'judul' => 'UPDATE DATA ',
+            'kategori' => $kategori
+        ];
+        return view("kategori/update", $data);
     }
     public function update($id = null)
     {
-        // echo view("template/header");
-        echo view("kategori/update");
-        // echo view("template/footer");
+        $model = new Kategori_M();
+        $model->save($_POST);
+        return redirect()->to(base_url("/admin/kategori"));
     }
     public function delete($id = null)
     {
-        echo "proses delete data";
+        $model = new Kategori_M;
+        $model->delete($id);
+        return redirect()->to(base_url("/admin/kategori"));
     }
 
     //--------------------------------------------------------------------

@@ -4,26 +4,29 @@ namespace App\Controllers\Admin;
 
 use App\Controllers\BaseController;
 
+use App\Models\Kategori_M;
+
 class Menu extends BaseController
 {
     public function index()
     {
-        // return view('welcome_message');
-        echo "Belajar CI-4/menu";
+        return view('menu/form');
     }
-
-    public function select()
+    public function insert()
     {
-        // return view('welcome_message');
-        echo "<h1>Untuk Menampilkan Data</h1>";
-    }
+        $File = $this->request->getFile('gambar');
+        $name = $File->getName();
 
-    public function update($id = '', $nama = "")
+        $File->move('./upload');
+        echo $name . " SUDAH DIAPLOD";
+    }
+    public function option()
     {
-        // return view('welcome_message');
-        echo "<h2>untuk update data dengan id : {$id} {$nama}</h2>";
+        $model = new Kategori_M;
+        $kategori = $model->findAll();
+        $data = [
+            'kategori' => $kategori
+        ];
+        return view('template/option', $data);
     }
-
-    //--------------------------------------------------------------------
-
 }

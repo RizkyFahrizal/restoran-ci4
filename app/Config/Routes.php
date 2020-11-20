@@ -36,10 +36,10 @@ $routes->setAutoRoute(true);
 // $routes->get('kategori/(:any)', 'admin\kategori::selectwhere/$1');
 
 $routes->group('/admin', function ($routes) {
-	$routes->add('kategori', 'admin\kategori::select');
-	$routes->add('kategori/select', 'admin\kategori::select');
-	$routes->add('kategori/form', 'admin\kategori::forminsert');
-	$routes->add('kategori/update/(:any)', 'admin\kategori::formupdate/$1');
+	$routes->add('/', 'admin\adminpage::index');
+	$routes->add('kategori', 'admin\kategori::read');
+	$routes->add('kategori/create', 'admin\kategori::create');
+	$routes->add('kategori/find/(:any)', 'admin\kategori::find/$1');
 });
 
 
