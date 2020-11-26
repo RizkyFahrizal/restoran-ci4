@@ -1,29 +1,49 @@
 <?= $this->extend('template/admin') ?>
 
 <?= $this->section('content') ?>
-<a class="btn btn-primary" href="<?= base_url('/admin/kategori/create') ?>" role="button">Tambah Data</a>
-<h1><?php echo $judul; ?></h1>
+<?php
+if (isset($_GET['page_page'])) {
+    $page = $_GET['page_page'];
+    $jumlah = 3;
+    $no = ($jumlah * $page) - $jumlah + 1;
+} else {
+    $no = 1;
+}
+?>
 
-<table class="table">
-    <tr>
+<div class="row">
+    <div class="col-3">
+        <a class="btn btn-primary mb-2" href="<?= base_url('/admin/kategori/create') ?>" role="button">Tambah Data</a>
+    </div>
+    <div class="col-6">
+        <h2><?php echo $judul; ?></h2>
+    </div>
+</div>
 
-        <th>No</th>
-        <th>Kategori</th>
-        <th>Keterangan</th>
-        <th>hapus</th>
-        <th>Ubah</th>
-    </tr>
-    <?php $no = 1; ?>
-    <?php foreach ($kategori as $key => $value) : ?>
-        <tr>
-            <td><?= $no++ ?></td>
-            <td><?= $value['kategori'] ?></td>
-            <td><?= $value['keterangan'] ?></td>
-            <td><a href="<?= base_url() ?>/admin/kategori/delete/<?= $value['idkategori'] ?>">Hapus</a></td>
-            <td><a href="<?= base_url() ?>/admin/kategori/find/<?= $value['idkategori'] ?>">Ubah</a></td>
 
-        </tr>
-    <?php endforeach; ?>
-</table>
-<?= $pager->links('group1', 'bootstrap') ?>
+<div class="row mt-1">
+    <div class="col">
+        <table class="table">
+            <tr>
+
+                <th>No</th>
+                <th>Kategori</th>
+                <th>Keterangan</th>
+                <th>Aksi</th>
+            </tr>
+            <?php $no ?>
+            <?php foreach ($kategori as $key => $value) : ?>
+                <tr>
+                    <td><?= $no++ ?></td>
+                    <td><?= $value['kategori'] ?></td>
+                    <td><?= $value['keterangan'] ?></td>
+                    <td><a href="<?= base_url() ?>/admin/kategori/delete/<?= $value['idkategori'] ?>"><img src="<?= base_url('icon/trash.svg') ?>"></a>
+                        <a href="<?= base_url() ?>/admin/kategori/find/<?= $value['idkategori'] ?>"><img src="<?= base_url('icon/pencil.svg') ?>"></a></td>
+
+                </tr>
+            <?php endforeach; ?>
+        </table>
+        <?= $pager->links('page', 'bootstrap') ?>
+    </div>
+</div>
 <?= $this->endsection() ?>

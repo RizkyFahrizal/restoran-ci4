@@ -11,14 +11,14 @@ class Kategori_M extends Model
     protected $primaryKey = 'idkategori';
 
     protected $validationRules    = [
-        'kategori'        => 'alpha_numeric_space|min_length[3]|is_unique[tblkategori.kategori]',
+        'kategori'        => 'alpha_numeric_space|min_length[3] |is_unique[tblkategori.kategori]',
     ];
 
     protected $validationMessages = [
         'kategori'        => [
-            'alpha_numeric_space' => 'Tidak boleh menggunakan simbol',
-            'min_length[3]' => 'Minimal 3 huruf',
-            'is_unique' => 'Ada data yg sama'
+            'alpha_numeric_space' => 'Tidak boleh menggunakan simbol !!',
+            'min_length[3]' => ' Minimal 3 huruf !!',
+            'is_unique' => 'Ada data yang sama !!'
 
         ]
     ];
