@@ -1,19 +1,20 @@
 <?= $this->extend('template/admin') ?>
 
 <?= $this->section('content') ?>
-<?php
-
-if (!empty(session()->getFlashdata('info'))) {
-    echo '<div  class="col">
+<div class="col">
+    <?php
+    if (!empty(session()->getFlashdata('info'))) {
+        echo '<div  class="col">
     <div class="alert alert-danger col-8" role="alert">';
-    $error = session()->getFlashdata('info');
-    foreach ($error as $key => $value) {
-        echo  $key . '=>' . $value;
-        echo "</br>";
+        $error = session()->getFlashdata('info');
+        foreach ($error as $key => $value) {
+            echo  $key . '=>' . $value;
+            echo "</br>";
+        }
+        echo "</div>";
     }
-    echo "</div>";
-}
-?>
+    ?>
+</div>
 <div class="col">
     <h3>INSERT DATA</h3>
 </div>
