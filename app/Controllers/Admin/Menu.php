@@ -2,6 +2,7 @@
 
 namespace App\Controllers\Admin;
 
+
 use App\Controllers\BaseController;
 use App\Models\Kategori_M;
 use App\Models\Menu_M;
@@ -19,6 +20,19 @@ class Menu extends BaseController
 			'pager' => $model->pager
 		];
 		return view("Menu/select", $data);
+	}
+
+	public function indexp()
+	{
+		$pager = \Config\Services::pager();
+		$model = new Menu_M;
+
+		$data = [
+			'judul' => 'DATA MENU',
+			'menu' => $model->paginate(3, 'page'),
+			'pager' => $model->pager
+		];
+		return view("frontend/layout/home", $data);
 	}
 
 	public function read()
@@ -48,6 +62,35 @@ class Menu extends BaseController
 				'total' => $count
 			];
 			return view("Menu/cari", $data);
+		}
+	}
+	public function readp()
+	{
+
+		$pager = \Config\Services::pager();
+		if (isset($_GET['idkategori'])) {
+			$id = $_GET['idkategori'];
+			$model = new Menu_M;
+			$jumlah = $model->where('idkategori', $id)->findAll();
+			$count = count($jumlah);
+
+			$tampil = 3;
+			$mulai = 0;
+
+			if (isset($_GET['page'])) {
+				$page = $_GET['page'];
+				$mulai = ($tampil * $page) - $tampil;
+			}
+			$menu = $model->where('idkategori', $id)->findAll($tampil, $mulai);
+
+			$data = [
+				'judul' => 'DATA PENCARIAN MENU',
+				'menu' => $menu,
+				'pager' => $pager,
+				'tampil' => $tampil,
+				'total' => $count
+			];
+			return view("frontend/menu/cari", $data);
 		}
 	}
 
@@ -138,6 +181,17 @@ class Menu extends BaseController
 		];
 		return view('template/option', $data);
 	}
+
+	public function optionp()
+	{
+		$model = new Kategori_M;
+		$kategori = $model->findAll();
+		$data = [
+			'kategori' => $kategori
+		];
+		return view('frontend/layout/option', $data);
+	}
+
 
 	public function delete($id = null)
 	{

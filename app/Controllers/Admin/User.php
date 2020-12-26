@@ -2,46 +2,57 @@
 
 namespace App\Controllers\Admin;
 
-use App\Models\User_M;
 use App\Controllers\BaseController;
+use App\Models\User_M;
 
 class User extends BaseController
 {
     public function index()
     {
         $pager = \Config\Services::pager();
-        $model = new User_M;
+
+        $model = new User_M();
+
 
         $data = [
             'judul' => 'DATA USER',
+
             'user' => $model->paginate(3, 'page'),
             'pager' => $model->pager
         ];
-        return view("user/select", $data);
+
+        echo view("user/select", $data);
     }
 
     public function create()
     {
         $data = [
-            'level' => ['Admin', 'Koki', 'Kasir'],
-
+            'level' => ['Admin', 'Koki', 'Kasir',],
+            'judul' => " UPDATE USER ",
         ];
+
         return view("user/insert", $data);
     }
+
     public function insert()
     {
 
-        if (isset($_POST['password'])) {
+        if (isset($_POST['simpan'])) {
             $data = [
+
                 'user' => $_POST['user'],
+                'judul' => " UPDATE USER ",
                 'email' => $_POST['email'],
                 'password' => password_hash($_POST['password'], PASSWORD_DEFAULT),
                 'level' => $_POST['level'],
                 'aktif' => 1
             ];
+
             $model = new User_M();
+
             if ($model->insert($data) === false) {
                 $error = $model->errors();
+
                 session()->setFlashdata('info', $error);
                 return redirect()->to(base_url("/admin/user/create"));
             } else {
@@ -50,37 +61,45 @@ class User extends BaseController
         }
     }
 
-    public function find($id = null)
-    {
-        $model = new User_M;
-        $user = $model->find($id);
-        $data = [
-            'judul' => 'UPDATE USER ',
-            'level' => ['Admin', 'Koki', 'Kasir'],
-            'user' => $user
-        ];
-        return view("user/update", $data);
-    }
-
     public function delete($id = null)
     {
-        $model = new User_M;
+
+        $model = new User_M();
         $model->delete($id);
+
         return redirect()->to(base_url("/admin/user"));
     }
+
     public function update($id = null, $isi = 1)
     {
-        $model = new User_M;
-        if ($isi == 0) {
-            $isi = 1;
-        } else {
+        $model = new User_M();
+
+        if ($isi == 1) {
             $isi = 0;
+        } else {
+            $isi = 1;
         }
+
         $data = [
             'aktif' => $isi
         ];
+
         $model->update($id, $data);
-        return redirect()->to(base_url("/admin/user"));
+        return redirect()->to(base_url("admin/user"));
+    }
+
+    public function find($id = null)
+    {
+        $model = new User_M();
+        $user = $model->find($id);
+
+        $data = [
+            'judul' => 'UPDATE USER',
+            'user' => $user,
+            'level' => ['Admin', 'Koki', 'Kasir',]
+        ];
+
+        return view("user/update", $data);
     }
 
     public function ubah()
@@ -93,6 +112,13 @@ class User extends BaseController
 
         $model = new User_M();
         $model->update($id, $data);
+
         return redirect()->to(base_url("/admin/user"));
     }
+
+
+
+
+    //--------------------------------------------------------------------
+
 }

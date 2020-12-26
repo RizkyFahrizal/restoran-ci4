@@ -16,7 +16,7 @@
     ?>
 </div>
 <div class="col">
-    <h3>INSERT DATA</h3>
+    <h3><?= $judul ?></h3>
 </div>
 
 <div class="col-8">
